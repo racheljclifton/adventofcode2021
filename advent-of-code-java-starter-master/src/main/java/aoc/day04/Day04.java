@@ -17,13 +17,13 @@ public class Day04 implements Day {
             boards.add(new Board(input.subList(i, i + 5)));
         }
         for (int i = 0; i < 4; i++) {
-            boards = markBoards(drawnNumbers[i], boards);
+            markBoards(drawnNumbers[i], boards);
         }
         Board winningBoard = null;
         int i = 3;
         while (winningBoard == null) {
             i++;
-            boards = markBoards(drawnNumbers[i], boards);
+            markBoards(drawnNumbers[i], boards);
             winningBoard = findWinningBoard(boards);
         }
         int sumOfNonMarked = winningBoard.getLines().stream().filter(item -> !item.isDrawn()).map(item -> Integer.parseInt(item.getNumber())).reduce( 0, (subtotal, number) -> subtotal+=number);
@@ -32,7 +32,32 @@ public class Day04 implements Day {
 
     @Override
     public String part2(List<String> input) {
-        return null;
+        String[] drawnNumbers = input.get(0).split(",");
+        List<Board> boards = new ArrayList<>();
+        for (int i = 2; i < input.size() - 4; i += 6) {
+            boards.add(new Board(input.subList(i, i + 5)));
+        }
+        for (int i = 0; i < 4; i++) {
+            markBoards(drawnNumbers[i], boards);
+        }
+        int sumOfNonMarkedOnWinningBoard = 0;
+        int winningDraw = 0;
+        int i = 3;
+        while (boards.size() > 1) {
+            i++;
+            markBoards(drawnNumbers[i], boards);
+            boards = findAndRemoveWinningBoards(boards);
+        }
+        boolean theLastBoardHasWon = false;
+        while (!theLastBoardHasWon) {
+            i++;
+            markBoards(drawnNumbers[i], boards);
+            Board winningBoard = findWinningBoard(boards);
+            if(winningBoard != null) theLastBoardHasWon = true;
+        }
+        sumOfNonMarkedOnWinningBoard = boards.get(0).getLines().stream().filter(item -> !item.isDrawn()).map(item -> Integer.parseInt(item.getNumber())).reduce( 0, (subtotal, number) -> subtotal+=number);
+        winningDraw = Integer.parseInt(drawnNumbers[i]);
+        return String.valueOf(sumOfNonMarkedOnWinningBoard * winningDraw);
     }
 
     private Board findWinningBoard(List<Board> boards) {
@@ -54,7 +79,29 @@ public class Day04 implements Day {
         return null;
     }
 
-    private List<Board> markBoards(String number, List<Board> boards) {
+    private List<Board> findAndRemoveWinningBoards(List<Board> boards) {
+        List<Board> winningBoards = new ArrayList<>();
+        for(Board board : boards) {
+            List<BoardItem> lines = board.getLines();
+            for(int i = 0; i < lines.size() - 4; i += 5) {
+                if (lines.get(i).isDrawn() && lines.get(i+1).isDrawn() && lines.get(i+2).isDrawn()
+                        &&  lines.get(i+3).isDrawn() &&  lines.get(i+4).isDrawn()) {
+                    winningBoards.add(board);
+                }
+            }
+            if(winningBoards.contains(board)) continue;
+            for(int i = 0; i < 5; i++) {
+                if (lines.get(i).isDrawn() && lines.get(i+5).isDrawn() && lines.get(i+10).isDrawn()
+                        &&  lines.get(i+15).isDrawn() &&  lines.get(i+20).isDrawn()) {
+                    winningBoards.add(board);
+                }
+            }
+        }
+        boards.removeAll(winningBoards);
+        return boards;
+    }
+
+    private void markBoards(String number, List<Board> boards) {
         for (Board board: boards)
         {
             List<BoardItem> newLines = board.getLines().stream().peek(boardItem -> {
@@ -64,7 +111,6 @@ public class Day04 implements Day {
             }).collect(Collectors.toList());
             board.setLines(newLines);
         }
-        return boards;
     }
 
     private class Board {
