@@ -40,13 +40,13 @@ public class Day04 implements Day {
         for (int i = 0; i < 4; i++) {
             markBoards(drawnNumbers[i], boards);
         }
-        int sumOfNonMarkedOnWinningBoard = 0;
-        int winningDraw = 0;
+        int sumOfNonMarkedOnWinningBoard;
+        int winningDraw;
         int i = 3;
         while (boards.size() > 1) {
             i++;
             markBoards(drawnNumbers[i], boards);
-            boards = findAndRemoveWinningBoards(boards);
+            findAndRemoveWinningBoards(boards);
         }
         boolean theLastBoardHasWon = false;
         while (!theLastBoardHasWon) {
@@ -79,7 +79,7 @@ public class Day04 implements Day {
         return null;
     }
 
-    private List<Board> findAndRemoveWinningBoards(List<Board> boards) {
+    private void findAndRemoveWinningBoards(List<Board> boards) {
         List<Board> winningBoards = new ArrayList<>();
         for(Board board : boards) {
             List<BoardItem> lines = board.getLines();
@@ -98,7 +98,6 @@ public class Day04 implements Day {
             }
         }
         boards.removeAll(winningBoards);
-        return boards;
     }
 
     private void markBoards(String number, List<Board> boards) {
@@ -113,7 +112,7 @@ public class Day04 implements Day {
         }
     }
 
-    private class Board {
+    private static class Board {
         private List<BoardItem> lines;
 
         public Board(List<String> lineList) {
@@ -137,7 +136,7 @@ public class Day04 implements Day {
         }
     }
 
-    private class BoardItem {
+    private static class BoardItem {
         private final String number;
         private boolean drawn;
 
