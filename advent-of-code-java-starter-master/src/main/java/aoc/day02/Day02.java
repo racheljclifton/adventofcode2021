@@ -2,7 +2,6 @@ package aoc.day02;
 
 import aoc.Day;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Day02 implements Day {
