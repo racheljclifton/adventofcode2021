@@ -8,6 +8,7 @@ import aoc.day02.Day02;
 import aoc.day03.Day03;
 import aoc.day04.Day04;
 import aoc.day05.Day05;
+import aoc.day06.Day06;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class App {
         DAYS.put(3, new Day03());
         DAYS.put(4, new Day04());
         DAYS.put(5, new Day05());
+        DAYS.put(6, new Day06());
     }
 
     private static List<String> loadInput(int day){
@@ -47,7 +49,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int day = 5;
+        int day = 6;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
         }
