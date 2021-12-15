@@ -48,25 +48,20 @@ public class Day06 implements Day {
     }
 
     private List<Integer> fishAfter128(int startingNumber) {
-        List<Integer> day1Spawn = new ArrayList<>();
-        day1Spawn.add(startingNumber);
+        List<Integer> spawnAtHalfwayMark = new ArrayList<>();
+        spawnAtHalfwayMark.add(startingNumber);
         for (int i = 1; i <= 128; i++) {
-            int numOfNewSpawn = day1Spawn.stream().reduce(0, (subtotal, number) -> number == 0 ? subtotal + 1 : subtotal);
-            day1Spawn = day1Spawn.stream().map(number -> number == 0 ? 6 : number - 1).collect(Collectors.toList());
+            int numOfNewSpawn = spawnAtHalfwayMark.stream().reduce(0, (subtotal, number) -> number == 0 ? subtotal + 1 : subtotal);
+            spawnAtHalfwayMark = spawnAtHalfwayMark.stream().map(number -> number == 0 ? 6 : number - 1).collect(Collectors.toList());
             for (int j = 1; j <= numOfNewSpawn; j++) {
-                day1Spawn.add(8);
+                spawnAtHalfwayMark.add(8);
             }
         }
         List<Integer> fishAfter128 = new ArrayList<>();
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 0 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 1 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 2 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 3 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 4 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 5 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 6 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 7 ? subtotal + 1 : subtotal));
-        fishAfter128.add(day1Spawn.stream().reduce(0, (subtotal, number) -> number == 8 ? subtotal + 1 : subtotal));
+        for (int i = 0; i < 9; i++) {
+            int finalI = i;
+            fishAfter128.add(spawnAtHalfwayMark.stream().reduce(0, (subtotal, number) -> number == finalI ? subtotal + 1 : subtotal));
+        }
         return fishAfter128;
     }
 
