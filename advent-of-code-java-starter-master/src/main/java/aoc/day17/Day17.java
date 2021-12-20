@@ -39,7 +39,7 @@ public class Day17 implements Day {
             int currentLocation = 0;
             int steps = 0;
             Position position = null;
-            while(xVelocity > 0) {
+            while(xVelocity >= 0) {
                 currentLocation += xVelocity;
                 if(currentLocation >= leftX && currentLocation <= rightX) {
                     if (position == null) {
@@ -48,6 +48,7 @@ public class Day17 implements Day {
                     } else {
                         position.addNumberOfSteps(steps);
                     }
+                    if (xVelocity == 0) position.zeroInsideOfZone = true;
                 }
                 if(currentLocation >= rightX) break;
                 xVelocity--;
@@ -69,9 +70,11 @@ public class Day17 implements Day {
                 currentLocation += yVelocity;
                 if(currentLocation > highestOnTrajectory) highestOnTrajectory = currentLocation;
                 if(currentLocation <= topY && currentLocation >= bottomY && steps >= Collections.min(possibleSteps)) {
-                    solutionFound = true;
-                    highest = highestOnTrajectory;
-                    break;
+                    for(Position position : possibleXValues) {
+                        solutionFound = true;
+                        highest = highestOnTrajectory;
+                        break;
+                    }
                 }
                 yVelocity--;
                 steps++;
