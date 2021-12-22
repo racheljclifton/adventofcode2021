@@ -67,7 +67,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int day = 17;
+        int day = 14;
         if(args.length != 0){
             day = Integer.parseInt(args[0]);
         }
